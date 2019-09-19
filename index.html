@@ -33,26 +33,48 @@
 				<section>
 					<h3>Agenda</h3>
 					<ol>
-						<li>Component Testing</li>
+						<li>Test Driven Development</li>
 					</ol>
 				</section>
 
 				<section>
-					<h3>Component Testing</h3>
+					<h3>Test Driven Development</h3>
 					<div>
 						<ul>
-							<li>Systems are too coupled to be effectively unit tested (Integration Tests)</li>
-							<li>Focus on behaviour</li>
-							<li>Avoid testing third party library functions</li>
+							<li>Writing tests before you write the code that liasses them</li>
+							<li>Forces you to think about imlilementation</li>
+							<li>Makes debugging easier</li>
 						</ul>
 					</div>
 
 					<aside class="notes">
 						<p>
-							Don't test React component did mount, React most likely has tests around this. Especially if mount calls another function
 						</p>
 					</aside>
 				</section>
+
+				<section>
+						<h3>Red, Green, Refactor</h3>
+						<div>
+							<img src="images/tdd.png" height="200" />
+							<ol>
+								<li>Add a test</li>
+								<li>Run all tests and see if the new one fails</li>
+								<li>Write some code</li>
+								<li>Run tests</li>
+								<li>Refactor code</li>
+								<li>Repeat</li>
+							</ol>
+						</div>
+
+						<aside class="notes">
+							<p>
+									<br>1. Before you write implementation code, write some code that proves that the implementation works or fails. Watch the test fail before moving to the next step (this is how we know that a passing test is not a false positive — how we test our tests).
+									<br>2. Write the implementation code and watch the test pass.
+									<br>3. Refactor if needed. You should feel confident refactoring your code now that you have a test to tell you if you’ve broken something.
+							</p>
+						</aside>
+					</section>
 
 				<section>
 					<h3>Integration Test</h3>
