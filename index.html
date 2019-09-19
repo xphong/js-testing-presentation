@@ -41,9 +41,10 @@
 					<h3>Test Driven Development</h3>
 					<div>
 						<ul>
-							<li>Writing tests before you write the code that liasses them</li>
-							<li>Forces you to think about imlilementation</li>
-							<li>Makes debugging easier</li>
+							<li>Writing tests before you write the code that passes them</li>
+							<li>Forces you to think about implementation</li>
+							<li>Makes debugging easier/Refactor with confidence</li>
+							<li>Immediate test coverage</li>
 						</ul>
 					</div>
 
@@ -77,22 +78,60 @@
 					</section>
 
 				<section>
-					<h3>Integration Test</h3>
+					<h3>Red</h3>
 					<div>
 						<pre><code data-trim>
-  updateUser = (body) => {
-    const { user, updateUser } = this.props
+describe('fib tests', () => {
+  it('should return `[0, 1, 1, 2]` with parameter being 4', () => {
+    const expectedResult = [0, 1, 1, 2]
+    expect(fib(4)).toEqual(expectedResult);
+  });
+});
+					</code></pre>
+					</div>
 
-    const newUser = {
-      ...user,
-      ...body
-    }
+					<aside class="notes">
+						<p>
+						</p>
+					</aside>
+        </section>
 
-    return updateUser(newUser)
-      .then(() => {
-        this.setState({ fetching: false})
-      })
+
+				<section>
+					<h3>Green</h3>
+					<div>
+						<pre><code data-trim>
+export const fib = (num) => {
+  let a = 1, b = 0, temp;
+
+  while (num >= 0){
+    temp = a;
+    a = a + b;
+    b = temp;
+    num--;
   }
+
+  return b;
+};
+					</code></pre>
+					</div>
+
+					<aside class="notes">
+						<p>
+						</p>
+					</aside>
+        </section>
+
+        <section>
+					<h3>Refactor</h3>
+					<div>
+						<pre><code data-trim>
+export const fib = (num) => {
+  if (num < 2){
+    return num
+  }
+  return fib(num - 1) + fib(num - 2);
+};
 					</code></pre>
 					</div>
 
