@@ -632,13 +632,70 @@ run as part of a suite but cannot be run by itself
               </aside>
         </section>
 
+        <section>
+            <h3>Integration Testing</h3>
+            <div class="left">
+              <img src="images/integrationtest.gif" height="350" />
+            </div>
+            <div class="right">
+              <ul>
+                <li>Unit tests work well in isolation</li>
+                <li>Small group of units to test their behavior as a whole, verifying that they coherently work together</li>
+              </ul>
+            </div>
+
+            <aside class="notes">
+              <p>
+                Unit tests do have one major disadvantage: even if the units work well in isolation, you do not know if they work well together. For that, you can use an integration test. An integration test takes a small group of units, often two units, and tests their behavior as a whole, verifying that they coherently work together.
+              </p>
+            </aside>
+          </section>
+
           <section>
               <div>
                   <img src="images/pyramid.png" height="500" />
                 </div>
 
                 <aside class="notes">
-                  <p></p>
+                  <p>Martin Fowler's testing pyramid</p>
+                  <p>As indicated here, the pyramid shows from bottom to top: Unit, Integration, E2E. As you move up the pyramid the tests get slower to write/run and more expensive (in terms of time and resources) to run/maintain. It's meant to indicate that you should spend more of your time on unit tests due to these factors.
+                    </p>
+                    <p>One thing that it doesn't show though is that as you move up the pyramid, the confidence quotient of each form of testing increases. You get more bang for your buck. So while E2E tests may be slower and more expensive than unit tests, they bring you much more confidence that your application is working as intended.
+                      </p>
+                </aside>
+          </section>
+
+          <section>
+              <div>
+                  <img src="images/trophy.jpeg" height="500" />
+                </div>
+
+                <aside class="notes">
+                  <p>Integration tests strike a great balance on the trade-offs between confidence and speed/expense. This is why it's advisable to spend most (not all, mind you) of your effort there.
+
+                    </p>
+                </aside>
+          </section>
+
+          <section>
+            <h3>Tools to write more integration tests
+              </h3>
+              <div>
+                  <ul>
+                    <li>Cypress Autorecord</li>
+                    <li>Polly.js</li>
+                  </ul>
+                </div>
+
+                <aside class="notes">
+                  <p>Cypress Autorecord is a plugin built to be used with Cypress.io. It simplifies mocking by auto-recording/stubbing HTTP interactions and automating the process of updating/deleting recordings. Spend more time writing integration tests instead of managing your mock data.
+                    </p>
+                    <p>
+                        Keeping fixtures and factories in parity with your APIs can be a time consuming process. Polly alleviates this by recording and maintaining actual server responses without foregoing flexibility.
+
+                        Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
+                        Use Polly's client-side server to modify or intercept requests and responses to simulate different application states (e.g. loading, error, etc.).
+                    </p>
                 </aside>
           </section>
 			</div>
