@@ -235,15 +235,147 @@ it('formats an address with one line correctly', () => {
             </aside>
           </section>
 
-				<section>
+        <section>
+          <h3>Mystery Guest</h3>
 					<div>
-						<img src="images/pyramid.png" height="500" />
-					</div>
+						<pre><code data-trim>
+import formatAddress from '../formatAddress';
+import addresses from '../__sampleData__/addresses';
 
-					<aside class="notes">
-						<p></p>
-					</aside>
-				</section>
+describe('formatAddress', () => {
+  it('formats an address with one line correctly', () => {
+    const address = addresses[1];
+    const expectedResult = `${address.street1}
+    ${address.city}, ${address.province} ${address.postalCode}`;
+    expect(formatAddress(address)).toEqual(expectedResult);
+  });
+});
+					</code></pre>
+          </div>
+
+          <aside class="notes">
+            <p>
+                "The test reader is not able to see the cause and effect between
+                fixture and verification logic because part of it is done outside the
+                Test Method.""
+            </p>
+                <p>- Can't see the data relevant to what's being tested, have to look in
+                another file</p>
+                <p>- Test harder to understand, easier for bugs to sneak through</p>
+                <p>- Coupled to shared test data; if it changes, test could break or give a
+                false positive</p>
+            </aside>
+          </section>
+
+          <section>
+              <h3>Solution: set up the data closer to the test</h3>
+              <div>
+                <pre><code data-trim>
+it('formats an address with one line correctly', () => {
+  const address = {
+    street1: '101 College Street',
+    city: 'Toronto',
+    province: 'ON',
+    postalCode: 'M5G 1L7'
+  };
+  const expectedResult = `${address.street1}
+  ${address.city}, ${address.province} ${address.postalCode}`;
+  expect(formatAddress(address)).toEqual(expectedResult);
+});
+              </code></pre>
+              </div>
+
+              <aside class="notes">
+                  <p>
+                      Approach 1: inline set up
+                  </p>
+                  <p>“Each Test Method creates its own Fresh Fixture by [building] exactly
+                      the test fixture it requires.”</p>
+              </aside>
+            </section>
+
+            <section>
+                <h3>Approach 2: delegated set up</h3>
+                <div>
+                  <pre><code data-trim>
+function createAddress({ hasStreet2 = false }) {
+  const address = {
+    street1: '101 College Street',
+    city: 'Toronto',
+    province: 'ON',
+    postalCode: 'M5G 1L7'
+  };
+  if (hasStreet2) {
+    address.street2 = 'Suite 123';
+  }
+  return address;
+};
+                </code></pre>
+                </div>
+
+                <div>
+                    <pre><code data-trim>
+it('formats an address with one line correctly', () => {
+  const address = createAddress({ hasStreet2: false });
+  const expectedResult = `${address.street1}
+  ${address.city}, ${address.province} ${address.postalCode}`;
+  expect(formatAddress(address)).toEqual(expectedResult);
+});
+                  </code></pre>
+                  </div>
+
+                <aside class="notes">
+                    <p>"Each Test Method creates its own Fresh Fixture by calling Creation
+                        Methods from within the Test Methods."</p>
+                </aside>
+              </section>
+
+              <section>
+                  <h3>Approach 3: implicit set up</h3>
+                  <div>
+                    <pre><code data-trim>
+let address;
+beforeEach(() => {
+  address = {
+    street1: '101 College Street',
+    city: 'Toronto',
+    province: 'ON',
+    postalCode: 'M5G 1L7'
+  };
+});
+                  </code></pre>
+                  </div>
+
+                  <div>
+                      <pre><code data-trim>
+it('formats an address with two lines correctly', () => {
+  address.street2 = 'Apt. 317';
+  const expectedResult = `${address.street1}
+  ${address.street2}
+  ${address.city}, ${address.province} ${address.postalCode}`;
+  expect(formatAddress(address)).toEqual(expectedResult);
+});
+                    </code></pre>
+                    </div>
+
+                  <aside class="notes">
+                      <p>“We build the test fixture common to several tests in the setUp
+                          method."</p>
+                  </aside>
+                </section>
+
+
+
+
+          <section>
+              <div>
+                  <img src="images/pyramid.png" height="500" />
+                </div>
+
+                <aside class="notes">
+                  <p></p>
+                </aside>
+          </section>
 			</div>
 		</div>
 
