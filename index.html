@@ -559,6 +559,78 @@ run as part of a suite but cannot be run by itself
         </aside>
   </section>
 
+    <section>
+        <h3>Production logic in tests</h3>
+        <div>
+            <pre><code data-trim>
+                describe('totalOrder', () => {
+                  it('calculates the correct total values', () => {
+                    const order = {
+                      lines: [
+                        {
+                          pricePerItem: 5.99,
+                          quantity: 3
+                        },
+                        {
+                          pricePerItem: 7.99,
+                          quantity: 4
+                        }
+                      ]
+                    };
+
+                    const lineTotals = order.lines.map(
+                      line => line.pricePerItem * line.quantity
+                    );
+                    const subtotal = lineTotals.reduce((acc, val) => acc + val);
+                    const tax = subtotal * 0.15;
+                    const total = subtotal + tax;
+                    const totalValues = totalOrder(order);
+                    expect(totalValues.subtotal).toEqual(subtotal);
+                    expect(totalValues.tax).toBeCloseTo(tax);
+                    expect(totalValues.total).toBeCloseTo(total);
+                  });
+                });
+          </code></pre>
+          </div>
+
+          <aside class="notes">
+            <p>
+                • If the logic is wrong in one place, it's wrong in both. Is it really
+                testing?
+                • Doesn't let you see the intended result at a glance
+            </p>
+            </aside>
+      </section>
+
+      <section>
+          <h3>Solution: hard coded test data</h3>
+          <div>
+              <pre><code data-trim>
+                  it('calculates the correct total values', () => {
+                    const order = {
+                      lines: [
+                        {
+                          pricePerItem: 2,
+                          quantity: 2
+                        },
+                        {
+                          pricePerItem: 3,
+                          quantity: 1
+                        }
+                      ]
+                    };
+
+                    const totalValues = totalOrder(order);
+                    expect(totalValues.subtotal).toEqual(7);
+                    expect(totalValues.tax).toBeCloseTo(1.05);
+                    expect(totalValues.total).toBeCloseTo(8.05);
+                  });
+            </code></pre>
+            </div>
+
+            <aside class="notes">
+              </aside>
+        </section>
 
           <section>
               <div>
