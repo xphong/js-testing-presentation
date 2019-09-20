@@ -364,6 +364,131 @@ it('formats an address with two lines correctly', () => {
                   </aside>
                 </section>
 
+                <section>
+                    <h3>Irrelevant Information</h3>
+                    <div>
+                      <pre><code data-trim>
+                          it('formats an address correctly', () => {
+                            const address = {
+                              firstName: 'Sally',
+                              lastName: 'Smith',
+                              street1: '80 Spadina Avenue',
+                              street2: '4th Floor',
+                              city: 'Toronto',
+                              province: 'ON',
+                              postalCode: 'M5V 2J4',
+                              country: 'CA'
+                            };
+                            const expectedResult = `${address.street1}
+                            ${address.street2}
+                            ${address.city}, ${address.province} ${address.postalCode}`;
+                            expect(formatAddress(address)).toEqual(expectedResult);
+                          });
+                    </code></pre>
+                    </div>
+
+                    <aside class="notes">
+                      <p>
+                          “The test exposes a lot of irrelevant details about the fixture that
+                          distract the test reader from what really affects the behavior of the
+                          [system under test].”
+                      </p>
+                          <p>- Hard to see which fields matter and which don't/p>
+                          <p>- Tests get long</p>
+                      </aside>
+                    </section>
+
+                    <section>
+                        <h3>Solution: minimal fixture</h3>
+                        <div>
+                          <pre><code data-trim>
+          it('formats an address correctly', () => {
+            const address = {
+              street1: '101 College Street',
+              city: 'Toronto',
+              province: 'ON',
+              postalCode: 'M5G 1L7'
+            };
+            const expectedResult = `${address.street1}
+            ${address.city}, ${address.province} ${address.postalCode}`;
+            expect(formatAddress(address)).toEqual(expectedResult);
+          });
+                        </code></pre>
+                        </div>
+
+                        <aside class="notes">
+                            <p>
+                                “We use the smallest and simplest fixture possible for each test.”
+                            </p>
+                            <p>“Each Test Method creates its own Fresh Fixture by [building] exactly
+                                the test fixture it requires.”</p>
+                        </aside>
+                      </section>
+
+                      <section>
+                          <h3>What if that data is still
+                              needed for the code to run?</h3>
+                          <div>
+                            <pre><code data-trim>
+                                const defaultAddress = {
+                                  firstName: 'Sally',
+                                  lastName: 'Smith',
+                                  street1: '80 Spadina Avenue',
+                                  street2: '4th Floor',
+                                  city: 'Toronto',
+                                  province: 'ON',
+                                  postalCode: 'M5V 2J4',
+                                  country: 'CA'
+                                };
+                                function createAddress(overrides = {}) {
+                                  return {
+                                    ...defaultAddress,
+                                    ...overrides
+                                  };
+                                };
+                          </code></pre>
+                          </div>
+
+                          <aside class="notes">
+                            <p>
+                                - Type verification
+                                - Class instance requiring constructor args
+                                - Fields validated by code unrelated to the test
+                            </p>
+                            <p>Solution 2: Parameterized
+                                Creation Method</p>
+                            <p>
+                                “We set up the test fixture by calling methods that hide the mechanics
+                                of building ready-to-use objects behind Intent-Revealing Names.”
+                                “A Parameterized Creation Method allows the test to pass in some
+                                attributes to be used in the creation of the object. In such a case, we
+                                should pass only those attributes that are expected to affect…the
+                                test's outcome”
+                            </p>
+                          </aside>
+                        </section>
+
+<section>
+    <div>
+        <pre><code data-trim>
+            it('formats an address correctly', () => {
+              const address = createAddress({
+                street1: '80 Spanida Avenue',
+                street2: '4th Floor',
+                city: 'Toronto',
+                province: 'ON',
+                postalCode: 'M5V 2J4'
+              });
+              const expectedResult = `${address.street1}
+              ${address.street2}
+              ${address.city}, ${address.province} ${address.postalCode}`;
+              expect(formatAddress(address)).toEqual(expectedResult);
+            });
+      </code></pre>
+      </div>
+
+</section>
+
 
 
 
