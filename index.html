@@ -35,6 +35,8 @@
 					<ol>
             <li>Test Driven Development</li>
             <li>Old Solutions to New Testing Problems</li>
+            <li>Integration Tests</li>
+            <li>Percy</li>
 					</ol>
 				</section>
 
@@ -489,7 +491,73 @@ it('formats an address with two lines correctly', () => {
 
 </section>
 
+<section>
+  <h3>Interacting Tests</h3>
+  <div>
+      <pre><code data-trim>
+          describe('totalOrder', () => {
+            it('calculates the correct total values when there are no line items', () => {
+              const order = orders[0];
+              order.lines = [];
+              const totalValues = totalOrder(order);
+              expect(totalValues.subtotal).toEqual(0);
+              expect(totalValues.tax).toEqual(0);
+              expect(totalValues.total).toEqual(0);
+            });
 
+            it('calculates the correct total values', () => {
+              const order = orders[0];
+              const totalValues = totalOrder(order);
+              expect(totalValues.subtotal).toEqual(7);
+              expect(totalValues.tax).toBeCloseTo(1.05);
+              expect(totalValues.total).toBeCloseTo(8.05);
+            });
+          });
+    </code></pre>
+    </div>
+
+    <aside class="notes">
+      <p>
+          Tests depend on other tests in some way…[for example,] a test can be
+run as part of a suite but cannot be run by itself
+      </p>
+      <p>In our case, a test can be run by itself but cannot be run as part of a
+          suite</p>
+      </aside>
+</section>
+
+<section>
+    <h3>Solution: fresh fixture</h3>
+    <div>
+        <pre><code data-trim>
+            it('calculates the correct total values when there are no line items', () => {
+              const order = _.cloneDeep(orders[0]);
+              order.lines = [];
+              const totalValues = totalOrder(order);
+              expect(totalValues.subtotal).toEqual(0);
+              expect(totalValues.tax).toEqual(0);
+              expect(totalValues.total).toEqual(0);
+            });
+
+            it('calculates the correct total values', () => {
+              const order = _.cloneDeep(orders[0]);
+              const totalValues = totalOrder(order);
+              expect(totalValues.subtotal).toEqual(7);
+              expect(totalValues.tax).toBeCloseTo(1.05);
+              expect(totalValues.total).toBeCloseTo(8.05);
+            });
+      </code></pre>
+      </div>
+
+      <aside class="notes">
+        <p>
+            Tests depend on other tests in some way…[for example,] a test can be
+  run as part of a suite but cannot be run by itself
+        </p>
+        <p>In our case, a test can be run by itself but cannot be run as part of a
+            suite</p>
+        </aside>
+  </section>
 
 
           <section>
