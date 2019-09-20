@@ -33,7 +33,8 @@
 				<section>
 					<h3>Agenda</h3>
 					<ol>
-						<li>Test Driven Development</li>
+            <li>Test Driven Development</li>
+            <li>Old Solutions to New Testing Problems</li>
 					</ol>
 				</section>
 
@@ -82,7 +83,7 @@
 					<div>
 						<pre><code data-trim>
 describe('fib tests', () => {
-  it('should return `[0, 1, 1, 2]` with parameter being 4', () => {
+  it('should return `[0, 1, 1, 2]` with the number being 4', () => {
     const expectedResult = [0, 1, 1, 2]
     expect(fib(4)).toEqual(expectedResult);
   });
@@ -139,7 +140,100 @@ export const fib = (num) => {
 						<p>
 						</p>
 					</aside>
-				</section>
+        </section>
+
+        <section>
+					<h3>Old Solutions to New Testing Problems</h3>
+					<div>
+            <p>
+              JavaScript test tooling has improved a lot. The problem now:
+              Test Maintainability. How can we learn how
+              to write more
+              maintainable tests?
+            </p>
+					</div>
+
+					<aside class="notes">
+						<p>
+              5 Patterns
+            </p>
+            <p>
+                Takeaways
+                1. New testing approaches
+                2. Clearer explanation of the benefits
+                3. Shared language and support
+            </p>
+					</aside>
+        </section>
+
+        <section>
+          <h3>Flexible Tests</h3>
+					<div>
+						<pre><code data-trim>
+import formatAddress from '../formatAddress';
+import addresses from '../__sampleData__/addresses';
+
+describe('formatAddress', () => {
+  it('formats addresses correctly', () => {
+    let expectedResult;
+    for (const address of addresses) {
+      if (address.street2) {
+        expectedResult = `${address.street1}
+        ${address.street2}
+        ${address.city}, ${address.province} ${address.postalCode}`;
+      } else {
+        expectedResult = `${address.street1}
+        ${address.city}, ${address.province} ${address.postalCode}`;
+      }
+      expect(formatAddress(address)).toEqual(expectedResult);
+    }
+  });
+});
+					</code></pre>
+					</div>
+
+					<aside class="notes">
+            <p>"Using conditional logic to reuse a single test to verify several different
+                cases."</p>
+						<p>
+                - Tests can be hard to understand
+                - Tests might have a bug, and you don't test your tests
+                - If test data changes, not all cases might be executed
+            </p>
+					</aside>
+        </section>
+
+        <section>
+            <h3>Solution: Simple Tests</h3>
+            <div>
+              <pre><code data-trim>
+it('formats an address with two lines correctly', () => {
+  const address = addresses[0];
+  const expectedResult = `${address.street1}
+  ${address.street2}
+  ${address.city}, ${address.province} ${address.postalCode}`;
+  expect(formatAddress(address)).toEqual(expectedResult);
+});
+            </code></pre>
+            </div>
+
+            <div>
+                <pre><code data-trim>
+it('formats an address with one line correctly', () => {
+  const address = addresses[1];
+  const expectedResult = `${address.street1}
+  ${address.city}, ${address.province} ${address.postalCode}`;
+  expect(formatAddress(address)).toEqual(expectedResult);
+});
+              </code></pre>
+              </div>
+
+            <aside class="notes">
+                <p>
+                    Split the tests into simpler cases, controlling for specific situations.
+                </p>
+            </aside>
+          </section>
 
 				<section>
 					<div>
